@@ -3,16 +3,19 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../include/learnopengl/shader.h"
-#include "../include/data.h"
-
-#include <iostream>
+#include <learnopengl/shader.h>
+#include <stb_image.h>
 #include <learnopengl/camera.h>
+#include <learnopengl/filesystem.h>
+
+#include "data.h"
+#include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
+
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -68,9 +71,10 @@ int main()
     // ------------------------------------
     // vertex shader
 
-    std::string filepath_fragmentShader = "/home/matija/Desktop/Grafika/Projekat/project_base/resources/shaders/fragmentShader.fs.glsl";
-    std::string filepath_vertexShader = "/home/matija/Desktop/Grafika/Projekat/project_base/resources/shaders/vertexShader.vs.glsl";
-    Shader shader(filepath_vertexShader.c_str(), filepath_fragmentShader.c_str());
+    //std::string filepath_fragmentShader = "/resources/shaders/fragmentShader.fs.glsl";
+    //std::string filepath_vertexShader = "/resources/shaders/vertexShader.vs.glsl";
+    Shader shader(FileSystem::getPath("resources/shaders/vertexShader.vs.glsl").c_str(),
+                  FileSystem::getPath("resources/shaders/fragmentShader.fs.glsl").c_str());
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
