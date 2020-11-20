@@ -39,7 +39,7 @@ float cubeVertices[] = {
         0.5, 0.5,-0.5
 };
 
-unsigned cubeIndicesCount = 32;
+unsigned cubeIndicesCount = 36;
 
 unsigned cubeIndices[] = {
         0, 1, 3,
