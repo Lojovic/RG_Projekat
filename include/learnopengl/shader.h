@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include "../rg/Error.h"
 
 class Shader
 {
@@ -99,8 +100,15 @@ public:
     // activate the shader
     // ------------------------------------------------------------------------
     void use() 
-    { 
+    {
+        ASSERT(ID > 0, "Use of unidefned or delete program!");
         glUseProgram(ID); 
+    }
+    // delete the program
+    // ------------------------------------------------------------------------
+    void deleteProgram() {
+        glDeleteProgram(ID);
+        ID = 0;
     }
     // utility uniform functions
     // ------------------------------------------------------------------------

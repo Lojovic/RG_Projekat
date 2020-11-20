@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16.5)
 set(PROJECT_NAME project_base)
 project(${PROJECT_NAME})
 
@@ -36,7 +36,7 @@ include_directories(${CMAKE_BINARY_DIR}/configuration)
 
 include_directories(include/)
 add_executable(${PROJECT_NAME}
-        ${SOURCES})
+        ${SOURCES} include/data.h)
 
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
