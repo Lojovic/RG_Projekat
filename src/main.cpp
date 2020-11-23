@@ -79,9 +79,6 @@ int main()
         //process input
         Sokoban.processInput(deltaTime);
 
-        //update game
-        Sokoban.update(deltaTime);
-
         // render
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -104,6 +101,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (key == GLFW_KEY_UP && action == GLFW_PRESS){
+        if(Sokoban.Levels[Sokoban.levelID].move(GLFW_KEY_UP))
+            Sokoban.render();
+    }
+    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
+        if(Sokoban.Levels[Sokoban.levelID].move(GLFW_KEY_DOWN))
+            Sokoban.render();
+    }
+    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS){
+        if(Sokoban.Levels[Sokoban.levelID].move(GLFW_KEY_LEFT))
+            Sokoban.render();
+    }
+    if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
+        if(Sokoban.Levels[Sokoban.levelID].move(GLFW_KEY_RIGHT))
+            Sokoban.render();
+    }
 
     if (key >= 0 && key < 1024)
     {

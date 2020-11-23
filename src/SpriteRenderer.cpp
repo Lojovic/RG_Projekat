@@ -7,8 +7,10 @@ SpriteRenderer::SpriteRenderer(Shader shader, Camera& cam) : camera(cam){
     this->initRenderData();
 }
 
+
 SpriteRenderer::~SpriteRenderer() {
-  //  glDeleteVertexArrays(1, &this->kvadratVAO);
+    //FIXME: curenje memorije SIGSEGV
+    //glDeleteVertexArrays(1, &this->kvadratVAO);
 }
 
 void SpriteRenderer::DrawSprite(Texture2D texture, glm::vec3 position, glm::vec3 size, float rotation, glm::vec3 color) {
@@ -21,7 +23,7 @@ void SpriteRenderer::DrawSprite(Texture2D texture, glm::vec3 position, glm::vec3
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection = glm::mat4(1.0f);
 
-    projection = glm::perspective(glm::radians(this->camera.Zoom), 800.0f/600.0f , 0.1f, 1000.0f);
+    projection = glm::perspective(glm::radians(this->camera.Zoom), 800.0f/600.0f , 0.1f, 100.0f);
     this->shader.SetMatrix4("projection", projection);
 
     //view = glm::translate(view, glm::vec3(1.0f, 0.0f, -3.0f));

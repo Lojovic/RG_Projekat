@@ -2,6 +2,7 @@
 #ifndef PROJECT_BASE_GAMELEVEL_H
 #define PROJECT_BASE_GAMELEVEL_H
 #include <vector>
+#include <unordered_map>
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -20,9 +21,15 @@ public:
     void Draw(SpriteRenderer &Renderer);
     //check if level is completed (all cubes are on right position)
     bool isCompleted();
+    bool move(unsigned int direction);
+    bool update();
+
 private:
     std::vector<std::vector<unsigned int>> cubeData;
+    std::vector<std::vector<unsigned int>> goalSquareData;
     unsigned int levelSize;
+    unsigned int folkX;
+    unsigned int folkY;
     void init();
 };
 
