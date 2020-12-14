@@ -7,6 +7,7 @@
 
 bool GameLevel::update() {
     this->Cubes.clear();
+    this->Boxes.clear();
     float unitSize = 1.0f;
 
     for(unsigned int i = 0; i < levelSize; i++)
@@ -31,7 +32,17 @@ bool GameLevel::update() {
                 size = glm::vec3(unitSize);
                 obj = GameObject(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
                 this->Cubes.push_back(obj);
-            }else if(cubeData[i][j] == 5){ //cikica
+            }else if(cubeData[i][j] == 8) { //baklja!
+                glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
+                glm::vec3 size(unitSize);
+                GameObject obj(pos, size, ResourceManager::GetTexture("wall"), glm::vec3(1.0f));
+                this->Cubes.push_back(obj);
+                pos = glm::vec3(i * unitSize, j * unitSize, -unitSize);
+                size = glm::vec3(unitSize);
+                obj = GameObject(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
+                this->Cubes.push_back(obj);
+            }
+            else if(cubeData[i][j] == 5){ //cikica
                 this->folkX = i;
                 this->folkY = j;
                 glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
@@ -53,22 +64,22 @@ bool GameLevel::update() {
                 goalSquareData[i][j] = 1;
                 glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
                 glm::vec3 size(unitSize);
-                GameObject obj(pos, size, ResourceManager::GetTexture("box"), glm::vec3(0.0f, 1.0f, 0.0f));
-                this->Cubes.push_back(obj);
+                Box box_obj(pos, size, ResourceManager::GetTexture("box"), ResourceManager::GetTexture("box_specular"), glm::vec3(0.0f, 1.0f, 0.0f));
+                this->Boxes.push_back(box_obj);
 
                 pos = glm::vec3(i * unitSize, j * unitSize, -unitSize);
                 size = glm::vec3(unitSize);
-                obj = GameObject(pos, size, ResourceManager::GetTexture("target"), glm::vec3(1.0f));
+                GameObject obj(pos, size, ResourceManager::GetTexture("target"), glm::vec3(1.0f));
                 this->Cubes.push_back(obj);
             }else if(cubeData[i][j] == 3){ //obican box
                 glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
                 glm::vec3 size(unitSize);
-                GameObject obj(pos, size, ResourceManager::GetTexture("box"), glm::vec3(1.0f));
-                this->Cubes.push_back(obj);
+                Box box_obj(pos, size, ResourceManager::GetTexture("box"), ResourceManager::GetTexture("box_specular"), glm::vec3(1.0f));
+                this->Boxes.push_back(box_obj);
 
                 pos = glm::vec3(i * unitSize, j * unitSize, -unitSize);
                 size = glm::vec3(unitSize);
-                obj = GameObject(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
+                GameObject obj(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
                 this->Cubes.push_back(obj);
             }else if(cubeData[i][j] == 2){ //ciljno polje
                 goalSquareData[i][j] = 1;
@@ -89,7 +100,7 @@ bool GameLevel::update() {
 
 void GameLevel::Load(const char *file) {
     this->Cubes.clear();
-
+    this->Boxes.clear();
     // load from file
     unsigned int cubeCode;
     GameLevel level;
@@ -119,9 +130,11 @@ void GameLevel::Load(const char *file) {
     }
 }
 
-void GameLevel::Draw(SpriteRenderer &Renderer) {
+void GameLevel::Draw(SpriteRenderer &Renderer, SpriteRendererBox& BoxRenderer) {
     for(GameObject &cube : this->Cubes)
-        cube.Draw(Renderer);
+        cube.Draw(Renderer, this->Lights);
+    for(Box &box : this->Boxes)
+        box.Draw(BoxRenderer, this->Lights);
 }
 
 bool GameLevel::move(unsigned int direction) {
@@ -147,13 +160,13 @@ bool GameLevel::move(unsigned int direction) {
 
     new_folk_x = this->folkX + directionX;
     new_folk_y = this->folkY + directionY;
-    if(cubeData[new_folk_x][new_folk_y] == 9)
+    if(cubeData[new_folk_x][new_folk_y] == 9 || cubeData[new_folk_x][new_folk_y] == 8)
         move_allowed = false;
     if(move_allowed && (cubeData[new_folk_x][new_folk_y] == 3 || cubeData[new_folk_x][new_folk_y] == 4))
     {
         int new_box_x = new_folk_x + directionX;
         int new_box_y = new_folk_y + directionY;
-        if(cubeData[new_box_x][new_box_y] == 9)
+        if(cubeData[new_box_x][new_box_y] == 9 || cubeData[new_folk_x][new_folk_y] == 8)
             move_allowed = false;
         if(cubeData[new_box_x][new_box_y] == 3 || cubeData[new_box_x][new_box_y] == 4)
             move_allowed = false;
@@ -208,6 +221,7 @@ void GameLevel::init()
         {
             /*
                 9 for borders
+                8 for torches
                 5 for folk
                 4 for done boxes
                 3 for normal boxes
@@ -224,6 +238,18 @@ void GameLevel::init()
                 size = glm::vec3(unitSize);
                 obj = GameObject(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
                 this->Cubes.push_back(obj);
+            }else if(cubeData[i][j] == 8) { //baklja
+                glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
+                glm::vec3 size(unitSize);
+                GameObject obj(pos, size, ResourceManager::GetTexture("wall"), glm::vec3(1.0f));
+                this->Cubes.push_back(obj);
+                pos = glm::vec3(i * unitSize, j * unitSize, -unitSize);
+                size = glm::vec3(unitSize);
+                obj = GameObject(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
+                this->Cubes.push_back(obj);
+                //TODO: unitSize -> visinaBaklje
+                this->Lights.push_back(glm::vec3(i * unitSize, j * unitSize, unitSize));
+
             }else if(cubeData[i][j] == 5){ //cikica
                 this->folkX = i;
                 this->folkY = j;
@@ -245,22 +271,22 @@ void GameLevel::init()
             }else if(cubeData[i][j] == 4){ //done box
                 glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
                 glm::vec3 size(unitSize);
-                GameObject obj(pos, size, ResourceManager::GetTexture("box"), glm::vec3(0.0f, 1.0f, 0.0f));
-                this->Cubes.push_back(obj);
+                Box box_obj(pos, size, ResourceManager::GetTexture("box"), ResourceManager::GetTexture("box_specular"), glm::vec3(0.0f, 1.0f, 0.0f));
+                this->Boxes.push_back(box_obj);
 
                 pos = glm::vec3(i * unitSize, j * unitSize, -unitSize);
                 size = glm::vec3(unitSize);
-                obj = GameObject(pos, size, ResourceManager::GetTexture("target"), glm::vec3(1.0f));
+                GameObject obj(pos, size, ResourceManager::GetTexture("target"), glm::vec3(1.0f));
                 this->Cubes.push_back(obj);
             }else if(cubeData[i][j] == 3){ //obican box
                 glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
                 glm::vec3 size(unitSize);
-                GameObject obj(pos, size, ResourceManager::GetTexture("box"), glm::vec3(1.0f));
-                this->Cubes.push_back(obj);
+                Box box_obj(pos, size, ResourceManager::GetTexture("box"), ResourceManager::GetTexture("box_specular"), glm::vec3(1.0f));
+                this->Boxes.push_back(box_obj);
 
                 pos = glm::vec3(i * unitSize, j * unitSize, -unitSize);
                 size = glm::vec3(unitSize);
-                obj = GameObject(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
+                GameObject obj(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
                 this->Cubes.push_back(obj);
             }else if(cubeData[i][j] == 2){ //ciljno polje
                 goalSquareData[i][j] = 1;
