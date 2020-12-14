@@ -14,7 +14,7 @@ public:
     GameObject();
     GameObject(glm::vec3 pos, glm::vec3 size, Texture2D sprite, glm::vec3 color = glm::vec3(1.0f));
 
-    virtual void Draw(SpriteRenderer &renderer);
+    virtual void Draw(SpriteRenderer &renderer, std::vector<glm::vec3> lightPositions);
 };
 
 

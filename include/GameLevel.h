@@ -10,15 +10,18 @@
 #include "GameObject.h"
 #include "SpriteRenderer.h"
 #include "ResourceManager.h"
+#include "Box.h"
 
 class GameLevel {
 public:
     std::vector<GameObject> Cubes;
+    std::vector<Box> Boxes;
+    std::vector<glm::vec3> Lights;
     GameLevel() {}
     //Load level from file
     void Load(const char *file);
     //render lvl
-    void Draw(SpriteRenderer &Renderer);
+    void Draw(SpriteRenderer &Renderer, SpriteRendererBox &BoxRenderer);
     //check if level is completed (all cubes are on right position)
     bool isCompleted();
     bool move(unsigned int direction);

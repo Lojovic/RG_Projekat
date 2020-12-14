@@ -1,29 +1,33 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <learnopengl/camera.h>
-#include "SpriteRenderer.h"
+#include "SpriteRendererBox.h"
 #include <iostream>
 
 
-SpriteRenderer::SpriteRenderer(Shader shader, Camera& cam) : camera(cam){
+SpriteRendererBox::SpriteRendererBox(Shader shader, Camera& cam) : camera(cam){
     this->shader = shader;
     this->initRenderData();
 }
 
 
-SpriteRenderer::~SpriteRenderer() {
+SpriteRendererBox::~SpriteRendererBox() {
     //FIXME: curenje memorije SIGSEGV
     //glDeleteVertexArrays(1, &this->kvadratVAO);
 }
 
-void SpriteRenderer::DrawSprite(std::vector<glm::vec3> pointLightPositions, Texture2D texture, glm::vec3 position, glm::vec3 size,
+void SpriteRendererBox::DrawSpriteBox(std::vector<glm::vec3> pointLightPositions, Texture2D diffuse, Texture2D specular, glm::vec3 position, glm::vec3 size,
                                 float rotation, glm::vec3 color) {
     glActiveTexture(GL_TEXTURE0);
-    texture.Bind();
+    diffuse.Bind();
+
+    glActiveTexture(GL_TEXTURE1);
+    specular.Bind();
 
     this->shader.Use();
     this->shader.SetVector3f("viewPos", this->camera.Position);
     this->shader.SetFloat("material.shininess", 32.0f);
     this->shader.SetInteger("number_of_lights", (int)pointLightPositions.size());
+    this->shader.SetVector3f("defaultColor", color);
 
     for(unsigned int i = 0; i < pointLightPositions.size(); i++)
     {
@@ -61,7 +65,7 @@ void SpriteRenderer::DrawSprite(std::vector<glm::vec3> pointLightPositions, Text
     glBindVertexArray(0);
 }
 
-void SpriteRenderer::initRenderData() {
+void SpriteRendererBox::initRenderData() {
     unsigned int VBO;
     float vertices[] = {
             // positions          // normals           // texture coords

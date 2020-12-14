@@ -22,6 +22,7 @@ public:
 private:
     std::unordered_map<unsigned int, std::string> pathMap;
     unsigned int numberOfLevels = 3;
+
     Camera camera;
 };
 

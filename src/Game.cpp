@@ -1,13 +1,16 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
+#include "SpriteRendererBox.h"
 #include "learnopengl/filesystem.h"
 
 SpriteRenderer *Renderer;
+SpriteRendererBox *BoxRenderer;
 
-Game::Game(unsigned int width, unsigned int height) : camera(Camera(glm::vec3(3.0f, 3.0f, 10.0f))), levelID(0){
+Game::Game(unsigned int width, unsigned int height) : levelID(0){
     this->width = width;
     this->height = height;
+    this->camera.Position = glm::vec3(3.0f, 3.0f, 10.0f);
     this->pathMap[0] = "resources/levels/1.txt";
     this->pathMap[1] = "resources/levels/2.txt";
     this->pathMap[2] = "resources/levels/3.txt";
@@ -21,18 +24,29 @@ void Game::init() {
     //load shader
     ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShader.vs.glsl").c_str(),
                                 FileSystem::getPath("resources/shaders/fragmentShader.fs.glsl").c_str(), nullptr, "sprite");
+    ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShader.vs.glsl").c_str(),
+                                FileSystem::getPath("resources/shaders/fragmentShaderBox.fs.glsl").c_str(), nullptr, "sprite_box");
+
     //configure shader
     //only once has to be done
-    ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
+    ResourceManager::GetShader("sprite").Use().SetInteger("material.diffuse", 0);
+    ResourceManager::GetShader("sprite").Use().SetVector3f("material.specular", glm::vec3(0.2f));
+
+    ResourceManager::GetShader("sprite_box").Use().SetInteger("material.diffuse", 0);
+    ResourceManager::GetShader("sprite_box").Use().SetInteger("material.specular", 1);
+
     //set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"), this->camera);
+    BoxRenderer = new SpriteRendererBox(ResourceManager::GetShader("sprite_box"), this->camera);
 
     //load texture
-    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container.jpg").c_str(), false, "box");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container.png").c_str(), true, "box");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/awesomeface.png").c_str(), true, "folk");
-    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/brickwall.jpg").c_str(), false, "wall");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/bricks.jpg").c_str(), false, "wall");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/floor.png").c_str(), false, "floor");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/target.jpg").c_str(), false, "target");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container_specular.png").c_str(), true, "box_specular");
+
     GameLevel one;
     GameLevel two;
     GameLevel three;
@@ -68,7 +82,7 @@ void Game::render() {
     if(this->Levels[this->levelID].update() && this->levelID<2)
         this->levelID++;
 
-    this->Levels[this->levelID].Draw(*Renderer);
+    this->Levels[this->levelID].Draw(*Renderer, *BoxRenderer);
 }
 
 Camera &Game::getCamera() {
