@@ -1,9 +1,4 @@
-#pragma once
 #include "GameLevel.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <GLFW/glfw3.h>
 
 bool GameLevel::update() {
     this->Cubes.clear();
@@ -14,15 +9,6 @@ bool GameLevel::update() {
     {
         for(unsigned int j = 0; j < levelSize; j++)
         {
-            /*
-                9 for borders
-                5 for folk
-                4 for done boxes
-                3 for normal boxes
-                2 for empty spots
-                1 for normal floor
-                0 for free space
-            */
             if(cubeData[i][j] == 9) { //zid
                 glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
                 glm::vec3 size(unitSize);
@@ -130,7 +116,8 @@ void GameLevel::Load(const char *file) {
     }
 }
 
-void GameLevel::Draw(SpriteRenderer &Renderer, SpriteRendererBox& BoxRenderer) {
+void GameLevel::Draw(SpriteRenderer &Renderer,
+                     SpriteRendererBox &BoxRenderer) {
     for(GameObject &cube : this->Cubes)
         cube.Draw(Renderer, this->Lights);
     for(Box &box : this->Boxes)
@@ -207,6 +194,17 @@ bool GameLevel::isCompleted() {
 
 void GameLevel::init()
 {
+    /*CODES FOR LEVEL:
+                9 for borders
+                8 for torches
+                5 for folk
+                4 for done boxes
+                3 for normal boxes
+                2 for target spots
+                1 for normal floor
+                0 for free space
+     */
+    
     float unitSize = 1.0f;
     cubeData.resize(levelSize);
     for(unsigned int i = 0; i < levelSize; i++)
@@ -219,16 +217,6 @@ void GameLevel::init()
     {
         for(unsigned int j = 0; j < levelSize; j++)
         {
-            /*
-                9 for borders
-                8 for torches
-                5 for folk
-                4 for done boxes
-                3 for normal boxes
-                2 for empty spots
-                1 for normal floor
-                0 for free space
-            */
             if(cubeData[i][j] == 9) { //zid
                 glm::vec3 pos(i * unitSize, j * unitSize, 0.0f);
                 glm::vec3 size(unitSize);
@@ -248,7 +236,7 @@ void GameLevel::init()
                 obj = GameObject(pos, size, ResourceManager::GetTexture("floor"), glm::vec3(1.0f));
                 this->Cubes.push_back(obj);
                 //TODO: unitSize -> visinaBaklje
-                this->Lights.push_back(glm::vec3(i * unitSize, j * unitSize, unitSize));
+                this->Lights.push_back(glm::vec3(i * unitSize, j * unitSize, 0.8f));
 
             }else if(cubeData[i][j] == 5){ //cikica
                 this->folkX = i;

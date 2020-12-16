@@ -1,11 +1,6 @@
-//
-// Created by bob9952 on 21.11.20..
-//
-
+#pragma once
 #ifndef PROJECT_BASE_RESOURCEMANAGER_H
 #define PROJECT_BASE_RESOURCEMANAGER_H
-
-
 /*******************************************************************
 ** This code is part of Breakout.
 **
@@ -20,8 +15,8 @@
 #include <glad/glad.h>
 
 #include "Texture.h"
-#include "Shader.h"
-
+#include <learnopengl/model.h>
+#include <learnopengl/shader.h>
 
 // A static singleton ResourceManager class that hosts several
 // functions to load Textures and Shaders. Each loaded texture
@@ -34,6 +29,10 @@ public:
     // resource storage
     static std::map<std::string, Shader>    Shaders;
     static std::map<std::string, Texture2D> Textures;
+    static std::map<std::string, Model> Models;
+
+    static Model LoadModel(std::string const &path, std::string name);
+    static Model GetModel(std::string name);
     // loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
     static Shader    LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
     // retrieves a stored sader

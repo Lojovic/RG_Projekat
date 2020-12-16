@@ -5,8 +5,11 @@
 #include <unordered_map>
 
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "GameObject.h"
 #include "SpriteRenderer.h"
 #include "ResourceManager.h"

@@ -202,7 +202,6 @@ license: you are granted a perpetual, irrevocable license to copy, modify,
 publish, and distribute this file as you see fit.
 
 */
-
 #ifndef STBI_INCLUDE_STB_IMAGE_H
 #define STBI_INCLUDE_STB_IMAGE_H
 

@@ -1,9 +1,10 @@
+#pragma once
 #ifndef PROJECT_BASE_SPRITERENDERER_H
 #define PROJECT_BASE_SPRITERENDERER_H
 
-#include "Shader.h"
-#include "Texture.h"
+#include <learnopengl/shader.h>
 #include <learnopengl/camera.h>
+#include "Texture.h"
 
 class SpriteRenderer {
 public:
