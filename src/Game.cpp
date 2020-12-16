@@ -1,11 +1,9 @@
 #include "Game.h"
-#include "ResourceManager.h"
-#include "SpriteRenderer.h"
-#include "SpriteRendererBox.h"
-#include "learnopengl/filesystem.h"
 
 SpriteRenderer *Renderer;
 SpriteRendererBox *BoxRenderer;
+ModelRendererTorch *TorchRenderer;
+//Model torch(FileSystem::getPath("resources/objects/torch/Torch.obj"), false);
 
 Game::Game(unsigned int width, unsigned int height) : levelID(0){
     this->width = width;
@@ -18,6 +16,7 @@ Game::Game(unsigned int width, unsigned int height) : levelID(0){
 
 Game::~Game() {
     delete Renderer;
+    delete BoxRenderer;
 }
 
 void Game::init() {
@@ -26,6 +25,9 @@ void Game::init() {
                                 FileSystem::getPath("resources/shaders/fragmentShader.fs.glsl").c_str(), nullptr, "sprite");
     ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShader.vs.glsl").c_str(),
                                 FileSystem::getPath("resources/shaders/fragmentShaderBox.fs.glsl").c_str(), nullptr, "sprite_box");
+
+    ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShaderTorch.vs.glsl").c_str(),
+                                FileSystem::getPath("resources/shaders/fragmentShaderTorch.fs.glsl").c_str(), nullptr, "model_torch");
 
     //configure shader
     //only once has to be done
@@ -38,6 +40,7 @@ void Game::init() {
     //set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"), this->camera);
     BoxRenderer = new SpriteRendererBox(ResourceManager::GetShader("sprite_box"), this->camera);
+    TorchRenderer = new ModelRendererTorch(ResourceManager::GetShader("model_torch"), this->camera);
 
     //load texture
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container.png").c_str(), true, "box");
@@ -46,6 +49,7 @@ void Game::init() {
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/floor.png").c_str(), false, "floor");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/target.jpg").c_str(), false, "target");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container_specular.png").c_str(), true, "box_specular");
+    ResourceManager::LoadModel(FileSystem::getPath("resources/objects/torch/Torch.obj"), "torch");
 
     GameLevel one;
     GameLevel two;
@@ -83,6 +87,8 @@ void Game::render() {
         this->levelID++;
 
     this->Levels[this->levelID].Draw(*Renderer, *BoxRenderer);
+    for(glm::vec3 lightPos : this->Levels[this->levelID].Lights)
+        TorchRenderer->Draw(ResourceManager::GetModel("torch"), lightPos, glm::vec3(0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 90.0f);
 }
 
 Camera &Game::getCamera() {

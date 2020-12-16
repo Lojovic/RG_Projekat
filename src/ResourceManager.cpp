@@ -12,12 +12,22 @@
 #include <sstream>
 #include <fstream>
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 // Instantiate static variables
 std::map<std::string, Texture2D>    ResourceManager::Textures;
 std::map<std::string, Shader>       ResourceManager::Shaders;
+std::map<std::string, Model>        ResourceManager::Models;
 
+Model ResourceManager::LoadModel(std::string const &path, std::string name) {
+    Models[name] = Model(path, false);
+    return Models[name];
+}
+
+Model ResourceManager::GetModel(std::string name) {
+    return Models[name];
+}
 
 Shader ResourceManager::LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name)
 {
@@ -49,6 +59,8 @@ void ResourceManager::Clear()
     // (properly) delete all textures
     for (auto iter : Textures)
         glDeleteTextures(1, &iter.second.ID);
+
+    //TODO: kako obrisati model iz memorije ????
 }
 
 Shader ResourceManager::loadShaderFromFile(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile)

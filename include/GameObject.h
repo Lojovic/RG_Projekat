@@ -1,3 +1,4 @@
+#pragma once
 #ifndef PROJECT_BASE_GAMEOBJECT_H
 #define PROJECT_BASE_GAMEOBJECT_H
 

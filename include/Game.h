@@ -4,7 +4,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <learnopengl/camera.h>
+#include <learnopengl/filesystem.h>
 #include "GameLevel.h"
+#include "ResourceManager.h"
+#include "SpriteRenderer.h"
+#include "SpriteRendererBox.h"
+#include "ModelRendererTorch.h"
 
 class Game {
 public:

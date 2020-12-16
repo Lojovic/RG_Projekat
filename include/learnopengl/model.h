@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MODEL_H
 #define MODEL_H
 
@@ -21,7 +22,7 @@
 #include <vector>
 using namespace std;
 
-unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
+inline unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
 class Model 
 {
@@ -31,6 +32,8 @@ public:
     vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection;
+
+    Model(){}
 
     // constructor, expects a filepath to a 3D model.
     Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
@@ -202,8 +205,7 @@ private:
     }
 };
 
-
-unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
+inline unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
 {
     string filename = string(path);
     filename = directory + '/' + filename;
@@ -242,4 +244,5 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 
     return textureID;
 }
+
 #endif

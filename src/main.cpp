@@ -1,9 +1,4 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <learnopengl/camera.h>
 #include "Game.h"
-#include "ResourceManager.h"
 
 #include <iostream>
 
