@@ -19,6 +19,7 @@ class GameLevel {
 public:
     std::vector<GameObject> Cubes;
     std::vector<Box> Boxes;
+    std::vector<Box> BlendBoxes;
     std::vector<glm::vec3> Lights;
     GameLevel() {}
     //Load level from file

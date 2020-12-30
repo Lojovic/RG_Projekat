@@ -5,8 +5,7 @@ ModelRendererTorch::ModelRendererTorch(Shader shader, Camera &camera) : camera(c
 }
 
 ModelRendererTorch::~ModelRendererTorch() {
-    //FIXME: CURENJE MEMORIJE
-    //
+
 }
 
 void ModelRendererTorch::Draw(Model model, glm::vec3 position, glm::vec3 size, glm::vec3 rotation, float angle) {
@@ -19,9 +18,9 @@ void ModelRendererTorch::Draw(Model model, glm::vec3 position, glm::vec3 size, g
 
     // render the loaded model
     glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, position); // translate it down so it's at the center of the scene
+    modelMatrix = glm::translate(modelMatrix, position);
     modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), rotation);
-    modelMatrix = glm::scale(modelMatrix, size);	// it's a bit too big for our scene, so scale it down
+    modelMatrix = glm::scale(modelMatrix, size);
     this->shader.SetMatrix4("model", modelMatrix);
     model.Draw(this->shader);
 }

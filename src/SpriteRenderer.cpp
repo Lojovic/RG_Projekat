@@ -9,10 +9,8 @@ SpriteRenderer::SpriteRenderer(Shader shader, Camera& cam) : camera(cam){
     this->initRenderData();
 }
 
-
 SpriteRenderer::~SpriteRenderer() {
-    //FIXME: curenje memorije SIGSEGV
-    //glDeleteVertexArrays(1, &this->kvadratVAO);
+
 }
 
 void SpriteRenderer::DrawSprite(std::vector<glm::vec3> pointLightPositions, Texture2D texture, glm::vec3 position, glm::vec3 size,

@@ -10,6 +10,7 @@
 #include "SpriteRenderer.h"
 #include "SpriteRendererBox.h"
 #include "ModelRendererTorch.h"
+#include "SpriteRendererSkyBox.h"
 
 class Game {
 public:
@@ -21,11 +22,13 @@ public:
     unsigned int width, height;
     void init();
     void processInput(float deltaTime);
+    bool cameraLock = true;
     //void update(float deltaTime);
+    std::unordered_map<unsigned int, std::string> pathMap;
     void render();
     Camera &getCamera();
 private:
-    std::unordered_map<unsigned int, std::string> pathMap;
+
     unsigned int numberOfLevels = 3;
 
     Camera camera;

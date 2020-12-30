@@ -3,17 +3,18 @@
 SpriteRenderer *Renderer;
 SpriteRendererBox *BoxRenderer;
 ModelRendererTorch *TorchRenderer;
-//Model torch(FileSystem::getPath("resources/objects/torch/Torch.obj"), false);
+SpriteRendererSkyBox *SkyBoxRenderer;
 
 Game::Game(unsigned int width, unsigned int height) : levelID(0){
     this->width = width;
     this->height = height;
-    this->camera.Position = glm::vec3(3.0f, 3.0f, 10.0f);
+    this->camera.Position = glm::vec3(3.0f, 12.0f, -8.0f);
     this->pathMap[0] = "resources/levels/1.txt";
     this->pathMap[1] = "resources/levels/2.txt";
     this->pathMap[2] = "resources/levels/3.txt";
 }
 
+// Don't use destructors. Create destory function to free resources after main loop
 Game::~Game() {
     delete Renderer;
     delete BoxRenderer;
@@ -29,6 +30,10 @@ void Game::init() {
     ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShaderTorch.vs.glsl").c_str(),
                                 FileSystem::getPath("resources/shaders/fragmentShaderTorch.fs.glsl").c_str(), nullptr, "model_torch");
 
+    ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShaderSkyBox.vs.glsl").c_str(),
+                                FileSystem::getPath("resources/shaders/fragmentShaderSkyBox.fs.glsl").c_str(), nullptr, "skybox");
+
+
     //configure shader
     //only once has to be done
     ResourceManager::GetShader("sprite").Use().SetInteger("material.diffuse", 0);
@@ -37,11 +42,13 @@ void Game::init() {
     ResourceManager::GetShader("sprite_box").Use().SetInteger("material.diffuse", 0);
     ResourceManager::GetShader("sprite_box").Use().SetInteger("material.specular", 1);
 
+    ResourceManager::GetShader("skybox").Use().SetInteger("skybox", 0);
+
     //set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"), this->camera);
     BoxRenderer = new SpriteRendererBox(ResourceManager::GetShader("sprite_box"), this->camera);
     TorchRenderer = new ModelRendererTorch(ResourceManager::GetShader("model_torch"), this->camera);
-
+    SkyBoxRenderer = new SpriteRendererSkyBox(ResourceManager::GetShader("skybox"), this->camera);
     //load texture
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container.png").c_str(), true, "box");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/awesomeface.png").c_str(), true, "folk");
@@ -50,6 +57,26 @@ void Game::init() {
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/target.jpg").c_str(), false, "target");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container_specular.png").c_str(), true, "box_specular");
     ResourceManager::LoadModel(FileSystem::getPath("resources/objects/torch/Torch.obj"), "torch");
+
+    // +X (right)
+    // -X (left)
+    // +Y (top)
+    // -Y (bottom)
+    // +Z (front)
+    // -Z (back)
+
+    vector<std::string> faces
+            {
+                    FileSystem::getPath("resources/textures/skybox/Lycksele/posx.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/Lycksele/negx.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/Lycksele/posy.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/Lycksele/negy.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/Lycksele/posz.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/Lycksele/negz.jpg"),
+            };
+
+    unsigned int skyBoxID = ResourceManager::loadCubemap(faces);
+    SkyBoxRenderer->setCubeMapTextureId(skyBoxID);
 
     GameLevel one;
     GameLevel two;
@@ -65,16 +92,17 @@ void Game::init() {
 }
 
 void Game::processInput(float deltaTime) {
-    if (this->GameKeys[GLFW_KEY_W])
-        this->camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (this->GameKeys[GLFW_KEY_S])
-        this->camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (this->GameKeys[GLFW_KEY_A])
-        this->camera.ProcessKeyboard(LEFT, deltaTime);
-    if (this->GameKeys[GLFW_KEY_D])
-        this->camera.ProcessKeyboard(RIGHT, deltaTime);
-    if(this->GameKeys[GLFW_KEY_R])
-    {
+    if(!this->cameraLock) {
+        if (this->GameKeys[GLFW_KEY_W])
+            this->camera.ProcessKeyboard(FORWARD, deltaTime);
+        if (this->GameKeys[GLFW_KEY_S])
+            this->camera.ProcessKeyboard(BACKWARD, deltaTime);
+        if (this->GameKeys[GLFW_KEY_A])
+            this->camera.ProcessKeyboard(LEFT, deltaTime);
+        if (this->GameKeys[GLFW_KEY_D])
+            this->camera.ProcessKeyboard(RIGHT, deltaTime);
+    }
+    if(this->GameKeys[GLFW_KEY_R]){
         GameLevel tmp;
         tmp.Load(FileSystem::getPath(pathMap[levelID]).c_str());
         this->Levels[levelID] = tmp;
@@ -82,13 +110,13 @@ void Game::processInput(float deltaTime) {
 }
 
 void Game::render() {
-    //Renderer->DrawSprite(ResourceManager::GetTexture("box"),glm::vec3(2.0f), glm::vec3(1.0f), 45.0f, glm::vec3(1.0f));
     if(this->Levels[this->levelID].update() && this->levelID<2)
         this->levelID++;
 
     this->Levels[this->levelID].Draw(*Renderer, *BoxRenderer);
     for(glm::vec3 lightPos : this->Levels[this->levelID].Lights)
-        TorchRenderer->Draw(ResourceManager::GetModel("torch"), lightPos, glm::vec3(0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 90.0f);
+        TorchRenderer->Draw(ResourceManager::GetModel("torch"), lightPos, glm::vec3(0.5f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f);
+    SkyBoxRenderer->Draw();
 }
 
 Camera &Game::getCamera() {
