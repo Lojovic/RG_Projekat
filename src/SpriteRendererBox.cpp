@@ -11,12 +11,11 @@ SpriteRendererBox::SpriteRendererBox(Shader shader, Camera& cam) : camera(cam){
 
 
 SpriteRendererBox::~SpriteRendererBox() {
-    //FIXME: curenje memorije SIGSEGV
-    //glDeleteVertexArrays(1, &this->kvadratVAO);
+
 }
 
 void SpriteRendererBox::DrawSpriteBox(std::vector<glm::vec3> pointLightPositions, Texture2D diffuse, Texture2D specular, glm::vec3 position, glm::vec3 size,
-                                float rotation, glm::vec3 color) {
+                                float rotation, glm::vec3 color, bool alpha) {
     glActiveTexture(GL_TEXTURE0);
     diffuse.Bind();
 
@@ -24,6 +23,11 @@ void SpriteRendererBox::DrawSpriteBox(std::vector<glm::vec3> pointLightPositions
     specular.Bind();
 
     this->shader.Use();
+    if(alpha)
+        this->shader.SetFloat("alfa", 0.7);
+    else
+        this->shader.SetFloat("alfa", 1.0);
+
     this->shader.SetVector3f("viewPos", this->camera.Position);
     this->shader.SetFloat("material.shininess", 32.0f);
     this->shader.SetInteger("number_of_lights", (int)pointLightPositions.size());
@@ -32,7 +36,7 @@ void SpriteRendererBox::DrawSpriteBox(std::vector<glm::vec3> pointLightPositions
     for(unsigned int i = 0; i < pointLightPositions.size(); i++)
     {
         std::string tmp = "pointLights[" + std::to_string(i) + "]";
-        //std::cout << tmp << std::endl;
+
         this->shader.SetVector3f((tmp + ".position").c_str(), pointLightPositions[i]);
         this->shader.SetVector3f((tmp + ".diffuse").c_str(), 0.8f, 0.8f, 0.8f);
         this->shader.SetVector3f((tmp + ".specular").c_str(), 1.0f, 1.0f, 1.0f);
@@ -49,7 +53,6 @@ void SpriteRendererBox::DrawSpriteBox(std::vector<glm::vec3> pointLightPositions
     projection = glm::perspective(glm::radians(this->camera.Zoom), 800.0f/600.0f , 0.1f, 100.0f);
     this->shader.SetMatrix4("projection", projection);
 
-    //view = glm::translate(view, glm::vec3(1.0f, 0.0f, -3.0f));
     view = this->camera.GetViewMatrix();
     this->shader.SetMatrix4("view", view);
 

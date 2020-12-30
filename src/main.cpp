@@ -35,7 +35,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sokoban3D", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -59,6 +59,8 @@ int main()
     }
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     Sokoban.init();
 
@@ -96,7 +98,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if (key == GLFW_KEY_UP && action == GLFW_PRESS){
+    if (key == GLFW_KEY_UP && action == GLFW_RELEASE){
         if(Sokoban.Levels[Sokoban.levelID].move(GLFW_KEY_UP))
             Sokoban.render();
     }
@@ -113,6 +115,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             Sokoban.render();
     }
 
+    if (key == GLFW_KEY_L && action == GLFW_PRESS){
+        Sokoban.cameraLock = !Sokoban.cameraLock;
+    }
+
     if (key >= 0 && key < 1024)
     {
         if (action == GLFW_PRESS)
@@ -121,6 +127,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             Sokoban.GameKeys[key] = false;
     }
 }
+
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     Sokoban.getCamera().ProcessMouseScroll(yoffset);

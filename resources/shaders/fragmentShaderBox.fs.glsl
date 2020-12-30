@@ -28,6 +28,7 @@ in vec3 outNormals;
 uniform int number_of_lights;
 uniform vec3 viewPos;
 uniform vec3 defaultColor;
+uniform float alfa;
 uniform PointLight pointLights[MAX_NUMBER_OF_LIGHTS];
 uniform Material material;
 
@@ -41,23 +42,23 @@ void main()
     vec3 result = vec3(0.0f, 0.0f, 0.0f);
 
     for(int i = 0; i < number_of_lights; i++)
-    result += CalcPointLight(pointLights[i], norm, outFragPos, viewDir);
+        result += CalcPointLight(pointLights[i], norm, outFragPos, viewDir);
 
-    FragColor = vec4(result, 1.0) * vec4(defaultColor, 1.0);
+    FragColor = vec4(result, 1.0) * vec4(defaultColor, alfa);
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
-    // diffuse shading
+    // diffuse
     float diff = max(dot(normal, lightDir), 0.0);
-    // specular shading
+    // specular
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     // attenuation
     float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
-    // combine results
+    // combine ambinet, diffuse and specular
     vec3 ambient = light.ambient * vec3(texture(material.diffuse, outTexCoords));
     vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, outTexCoords));
     vec3 specular = light.specular * spec * vec3(texture(material.specular, outTexCoords));

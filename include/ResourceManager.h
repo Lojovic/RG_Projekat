@@ -31,6 +31,8 @@ public:
     static std::map<std::string, Texture2D> Textures;
     static std::map<std::string, Model> Models;
 
+    static unsigned int loadCubemap(vector<std::string> faces);
+
     static Model LoadModel(std::string const &path, std::string name);
     static Model GetModel(std::string name);
     // loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
