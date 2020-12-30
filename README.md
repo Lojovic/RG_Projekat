@@ -1,11 +1,24 @@
-# project_base
-Prazan projekat sa pratećim bibliotekama koje koristimo na času. 
+#Sokoban3D
 
-# Uputstvo
-1. `git clone https://github.com/matf-racunarska-grafika/project_base.git`
-2. CLion -> Open -> path/to/my/project_base
-3. Main se nalazi u src/main.cpp
-4. Cpp fajlovi idu u src folder
-5. Zaglavlja (h i hpp) fajlovi idu u include
-6. Šejderi idu u folder shaders. `Vertex shader` ima ekstenziju `.vs`, `fragment shader` ima ekstenziju `.fs`
-7. ALT+SHIFT+F10 -> project_base -> run
+##Opis
+Ova igrica predstavlja projekat iz predmeta Računarska grafika, 3.godine smera Informatika.
+
+Pisana je u C++ uz korišćenje biblioteke OpenGL 3.3
+
+Na izradi projekta radili su:
+- [Matija Lojović](https://github.com/Lojovic)
+- [Nikola Subotić](https://github.com/bob9952)
+
+##Gameplay
+Cilj igre je postaviti sve kutije na ciljna polja kontrolišući igrača. 
+
+##Kontrole
+| Dugme | Opis |
+| :---  | :--- |
+| ```Left``` , ```Right```, ```Up```, ```Down``` | Pomeranje igrača |
+| ```W``` , ```A```, ```S```, ```D``` | Pomeranje kamere |
+| ```L``` | Zaključavanje kamere |
+| ```R``` | Restartovanje nivoa |
+| ```Mouse left/right/up/down``` | Promena ugla kamere |
+| ```Mouse scroll``` | Zumiranje kamere |
+| ```ESC``` | Izlazak iz igre |
