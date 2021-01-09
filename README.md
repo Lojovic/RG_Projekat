@@ -1,24 +1,24 @@
 # Sokoban3D
 
-## Opis
-Ova igrica predstavlja projekat iz predmeta Računarska grafika, 3.godine smera Informatika.
+## Description
+This game represents a project done for the course of Computer graphics, 3rd year of Computer science, Faculty of Mathematics, Belgrade
 
-Pisana je u C++ uz korišćenje biblioteke OpenGL 3.3
+It was written using C++ and the OpenGL 3.3 specification
 
-Na izradi projekta radili su:
+Students that worked on this project:
 - [Matija Lojović](https://github.com/Lojovic)
 - [Nikola Subotić](https://github.com/bob9952)
 
 ## Gameplay
-Cilj igre je postaviti sve kutije na ciljna polja kontrolišući igrača. 
+The goal of this game is to set up all the boxes on the marked target squares.
 
-## Kontrole
-| Dugme | Opis |
+## Controls
+| Key | Description |
 | :---  | :--- |
-| ```Left``` , ```Right```, ```Up```, ```Down``` | Pomeranje igrača |
-| ```W``` , ```A```, ```S```, ```D``` | Pomeranje kamere |
-| ```L``` | Zaključavanje kamere |
-| ```R``` | Restartovanje nivoa |
-| ```Mouse left/right/up/down``` | Promena ugla kamere |
-| ```Mouse scroll``` | Zumiranje kamere |
-| ```ESC``` | Izlazak iz igre |
+| ```Left``` , ```Right```, ```Up```, ```Down``` | Moving the player |
+| ```W``` , ```A```, ```S```, ```D``` | Moving the camera |
+| ```L``` | Locking the camera |
+| ```R``` | Restarting the level |
+| ```Mouse left/right/up/down``` | Changing the camera angle |
+| ```Mouse scroll``` | Zooming the camera |
+| ```ESC``` | Exiting the game |

@@ -14,14 +14,13 @@ Game::Game(unsigned int width, unsigned int height) : levelID(0){
     this->pathMap[2] = "resources/levels/3.txt";
 }
 
-// Don't use destructors. Create destory function to free resources after main loop
 Game::~Game() {
     delete Renderer;
     delete BoxRenderer;
 }
 
 void Game::init() {
-    //load shader
+    //load shaders
     ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShader.vs.glsl").c_str(),
                                 FileSystem::getPath("resources/shaders/fragmentShader.fs.glsl").c_str(), nullptr, "sprite");
     ResourceManager::LoadShader(FileSystem::getPath("resources/shaders/vertexShader.vs.glsl").c_str(),
@@ -34,8 +33,8 @@ void Game::init() {
                                 FileSystem::getPath("resources/shaders/fragmentShaderSkyBox.fs.glsl").c_str(), nullptr, "skybox");
 
 
-    //configure shader
-    //only once has to be done
+    //configure shaders
+    //only has to be done once
     ResourceManager::GetShader("sprite").Use().SetInteger("material.diffuse", 0);
     ResourceManager::GetShader("sprite").Use().SetVector3f("material.specular", glm::vec3(0.2f));
 
@@ -44,12 +43,13 @@ void Game::init() {
 
     ResourceManager::GetShader("skybox").Use().SetInteger("skybox", 0);
 
-    //set render-specific controls
+    //create render objects
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"), this->camera);
     BoxRenderer = new SpriteRendererBox(ResourceManager::GetShader("sprite_box"), this->camera);
     TorchRenderer = new ModelRendererTorch(ResourceManager::GetShader("model_torch"), this->camera);
     SkyBoxRenderer = new SpriteRendererSkyBox(ResourceManager::GetShader("skybox"), this->camera);
-    //load texture
+
+    //load textures
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/container.png").c_str(), true, "box");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/awesomeface.png").c_str(), true, "folk");
     ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/bricks.jpg").c_str(), false, "wall");
@@ -75,9 +75,11 @@ void Game::init() {
                     FileSystem::getPath("resources/textures/skybox/Lycksele/negz.jpg"),
             };
 
+    //load cubemap
     unsigned int skyBoxID = ResourceManager::loadCubemap(faces);
     SkyBoxRenderer->setCubeMapTextureId(skyBoxID);
 
+    //load and save levels
     GameLevel one;
     GameLevel two;
     GameLevel three;
@@ -91,6 +93,7 @@ void Game::init() {
     this->Levels.push_back(three);
 }
 
+//allowing the camera to move and a level restarting feature
 void Game::processInput(float deltaTime) {
     if(!this->cameraLock) {
         if (this->GameKeys[GLFW_KEY_W])
@@ -109,6 +112,7 @@ void Game::processInput(float deltaTime) {
     }
 }
 
+//rendering of the current level, the light objects and the skybox
 void Game::render() {
     if(this->Levels[this->levelID].update() && this->levelID<2)
         this->levelID++;

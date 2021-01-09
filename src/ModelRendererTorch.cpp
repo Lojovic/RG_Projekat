@@ -8,6 +8,7 @@ ModelRendererTorch::~ModelRendererTorch() {
 
 }
 
+//an abstraction for rendering the torches
 void ModelRendererTorch::Draw(Model model, glm::vec3 position, glm::vec3 size, glm::vec3 rotation, float angle) {
     this->shader.Use();
 

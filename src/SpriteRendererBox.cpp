@@ -16,13 +16,18 @@ SpriteRendererBox::~SpriteRendererBox() {
 
 void SpriteRendererBox::DrawSpriteBox(std::vector<glm::vec3> pointLightPositions, Texture2D diffuse, Texture2D specular, glm::vec3 position, glm::vec3 size,
                                 float rotation, glm::vec3 color, bool alpha) {
+    //we activate and bind the diffuse texture
     glActiveTexture(GL_TEXTURE0);
     diffuse.Bind();
 
+    //we activate and bind the specular map
     glActiveTexture(GL_TEXTURE1);
     specular.Bind();
 
+    //activating the shader abstraction and setting up the uniforms
     this->shader.Use();
+
+    //setting up blending
     if(alpha)
         this->shader.SetFloat("alfa", 0.7);
     else

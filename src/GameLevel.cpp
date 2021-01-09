@@ -1,9 +1,11 @@
 #include "GameLevel.h"
 
+//loading the level structure from a .txt file
 void GameLevel::Load(const char *file) {
+    //making sure the object vectors are cleared
     this->Cubes.clear();
     this->Boxes.clear();
-    // load from file
+
     unsigned int cubeCode;
     GameLevel level;
     std::string line;
@@ -24,11 +26,10 @@ void GameLevel::Load(const char *file) {
 
         if(cubeData.size() > 0)
             this->init();
-    }else{
-        //greska
     }
 }
 
+//drawing a level using appropriate renderer classes
 void GameLevel::Draw(SpriteRenderer &Renderer,
                      SpriteRendererBox &BoxRenderer) {
     for(GameObject &cube : this->Cubes)
@@ -39,13 +40,16 @@ void GameLevel::Draw(SpriteRenderer &Renderer,
         blendBox.Draw(BoxRenderer, this->Lights);
 }
 
+//the function that determines the game's logic
+//we use a matrix named cubeData for storing the current level structure,
+//then we check if the move determined by the given direction is possible
 bool GameLevel::move(unsigned int direction) {
     int new_folk_y, new_folk_x;
     bool move_allowed = true;
     int directionX = 0;
     int directionY = 0;
 
-    //calculate new positions of folk
+    //calculate new positions of folk based on the given direction
     switch (direction) {
         case GLFW_KEY_UP:
             directionY = 1;
@@ -64,16 +68,25 @@ bool GameLevel::move(unsigned int direction) {
     new_folk_x = this->folkX + directionX;
     new_folk_y = this->folkY + directionY;
 
+    //checking if the target square is a wall
     if(cubeData[new_folk_x][new_folk_y] == 9 || cubeData[new_folk_x][new_folk_y] == 8)
         move_allowed = false;
 
+    //checking if the target square is a box
     if(move_allowed && (cubeData[new_folk_x][new_folk_y] == 3 || cubeData[new_folk_x][new_folk_y] == 4)){
+        //calculate the new position of the box based on the given direction
         int new_box_x = new_folk_x + directionX;
         int new_box_y = new_folk_y + directionY;
+
+        //checking if we hit a wall
         if(cubeData[new_box_x][new_box_y] == 9 || cubeData[new_box_x][new_box_y] == 8)
             move_allowed = false;
+
+        //checking if we hit another box
         if(cubeData[new_box_x][new_box_y] == 3 || cubeData[new_box_x][new_box_y] == 4)
             move_allowed = false;
+
+        //updating the box position within cubeData
         if(move_allowed && cubeData[new_box_x][new_box_y]==2){
             cubeData[new_box_x][new_box_y] = 4;
         }
@@ -82,6 +95,7 @@ bool GameLevel::move(unsigned int direction) {
         }
     }
 
+    //updating the position of folk
     if(move_allowed){
         if(goalSquareData[folkX][folkY]==1) {
             cubeData[folkX][folkY] = 2;
@@ -95,6 +109,7 @@ bool GameLevel::move(unsigned int direction) {
     return move_allowed;
 }
 
+//checking if the level is completed
 bool GameLevel::isCompleted() {
 
     for(unsigned int i = 0; i < levelSize; i++){
@@ -108,6 +123,9 @@ bool GameLevel::isCompleted() {
     return true;
 }
 
+//initializing the structure of a given level
+//we use the input from the Load function to
+//fill the appropriate game object vectors
 void GameLevel::init(){
     //TODO: Make some enum dont use numbers
     /*CODES FOR LEVEL:
@@ -213,6 +231,9 @@ void GameLevel::init(){
     }
 }
 
+//once the init function is called
+//each other time we use the update function to
+//do the game object setup
 bool GameLevel::update() {
     this->Cubes.clear();
     this->Boxes.clear();
