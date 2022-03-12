@@ -2,21 +2,25 @@
 #ifndef PROJECT_BASE_MODELRENDERERTORCH_H
 #define PROJECT_BASE_MODELRENDERERTORCH_H
 
+#include <learnopengl/camera.h>
 #include <learnopengl/model.h>
 #include <learnopengl/shader.h>
-#include <learnopengl/camera.h>
 
 
-class ModelRendererTorch {
+class ModelRendererTorch
+{
 public:
-    ModelRendererTorch(Shader shader, Camera& camera);
-    ~ModelRendererTorch();
+  ModelRendererTorch(Shader shader, Camera &camera);
+  ~ModelRendererTorch();
 
-    void Draw(Model model, glm::vec3 position, glm::vec3 size, glm::vec3 rotation, float angle);
+  void
+  Draw(Model model, glm::vec3 position, glm::vec3 size, glm::vec3 rotation,
+       float angle);
+
 private:
-    Shader shader;
-    Camera& camera;
+  Shader shader;
+  Camera &camera;
 };
 
 
-#endif //PROJECT_BASE_MODELRENDERERTORCH_H
+#endif // PROJECT_BASE_MODELRENDERERTORCH_H

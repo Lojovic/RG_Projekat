@@ -5,8 +5,8 @@
 #ifndef PROJECT_BASE_TEXTURE2D_H
 #define PROJECT_BASE_TEXTURE2D_H
 #include <glad/glad.h>
-#include <stb_image.h>
 #include <rg/Error.h>
+#include <stb_image.h>
 
 
-#endif //PROJECT_BASE_TEXTURE2D_H
+#endif // PROJECT_BASE_TEXTURE2D_H
