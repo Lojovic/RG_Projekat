@@ -1,10 +1,7 @@
 #!/usr/bin/bash
 
-# Expose the X server on the host.
 sudo xhost +local:root
-# --rm: Make the container ephemeral (delete on exit).
-# -it: Interactive TTY.
-# --gpus all: Expose all GPUs to the container.
+
 docker run \
   --rm \
   -it \
