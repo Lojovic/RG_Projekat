@@ -25,4 +25,4 @@ The goal of this game is to set up all the boxes on the marked target squares.
 
 
 ## Jenkins
-Jenkins CI should work
+Jenkins CI should work now
