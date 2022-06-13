@@ -23,7 +23,7 @@
 using namespace std;
 
 inline unsigned int
-TextureFromFile(const char *path, const string &directory, bool gamma = false);
+TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
 class Model
 {
@@ -39,15 +39,13 @@ public:
   Model() {}
 
   // constructor, expects a filepath to a 3D model.
-  Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
-  {
+  Model(string const& path, bool gamma = false) : gammaCorrection(gamma) {
     loadModel(path);
   }
 
   // draws the model, and thus all its meshes
   void
-  Draw(Shader &shader)
-  {
+  Draw(Shader& shader) {
     for (unsigned int i = 0; i < meshes.size(); i++)
       meshes[i].Draw(shader);
   }
@@ -56,11 +54,10 @@ private:
   // loads a model with supported ASSIMP extensions from file and stores the
   // resulting meshes in the meshes vector.
   void
-  loadModel(string const &path)
-  {
+  loadModel(string const& path) {
     // read file via ASSIMP
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(
+    const aiScene* scene = importer.ReadFile(
         path, aiProcess_Triangulate | aiProcess_GenSmoothNormals |
                   aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     // check for errors
@@ -81,14 +78,13 @@ private:
   // located at the node and repeats this process on its children nodes (if
   // any).
   void
-  processNode(aiNode *node, const aiScene *scene)
-  {
+  processNode(aiNode* node, const aiScene* scene) {
     // process each mesh located at the current node
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
       // the node object only contains indices to index the actual objects in
       // the scene. the scene contains all the data, node is just to keep stuff
       // organized (like relations between nodes).
-      aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+      aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
       meshes.push_back(processMesh(mesh, scene));
     }
     // after we've processed all of the meshes (if any) we then recursively
@@ -99,8 +95,7 @@ private:
   }
 
   Mesh
-  processMesh(aiMesh *mesh, const aiScene *scene)
-  {
+  processMesh(aiMesh* mesh, const aiScene* scene) {
     // data to fill
     vector<Vertex> vertices;
     vector<unsigned int> indices;
@@ -159,7 +154,7 @@ private:
         indices.push_back(face.mIndices[j]);
     }
     // process materials
-    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     // we assume a convention for sampler names in the shaders. Each diffuse
     // texture should be named as 'texture_diffuseN' where N is a sequential
     // number ranging from 1 to MAX_SAMPLER_NUMBER. Same applies to other
@@ -191,8 +186,7 @@ private:
   // checks all material textures of a given type and loads the textures if
   // they're not loaded yet. the required info is returned as a Texture struct.
   vector<Texture>
-  loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
-  {
+  loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName) {
     vector<Texture> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
       aiString str;
@@ -224,8 +218,7 @@ private:
 };
 
 inline unsigned int
-TextureFromFile(const char *path, const string &directory, bool gamma)
-{
+TextureFromFile(const char* path, const string& directory, bool gamma) {
   string filename = string(path);
   filename = directory + '/' + filename;
 
@@ -233,7 +226,7 @@ TextureFromFile(const char *path, const string &directory, bool gamma)
   glGenTextures(1, &textureID);
 
   int width, height, nrComponents;
-  unsigned char *data =
+  unsigned char* data =
       stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
   if (data) {
     GLenum format;

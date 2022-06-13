@@ -1,8 +1,7 @@
 #include "SpriteRendererSkyBox.h"
 
-SpriteRendererSkyBox::SpriteRendererSkyBox(Shader shader, Camera &cam)
-    : camera(cam)
-{
+SpriteRendererSkyBox::SpriteRendererSkyBox(Shader shader, Camera& cam)
+    : camera(cam) {
   this->shader = shader;
   this->cubeMapTextureID = 0;
   init_data();
@@ -11,8 +10,7 @@ SpriteRendererSkyBox::SpriteRendererSkyBox(Shader shader, Camera &cam)
 SpriteRendererSkyBox::~SpriteRendererSkyBox() = default;
 
 void
-SpriteRendererSkyBox::Draw()
-{
+SpriteRendererSkyBox::Draw() {
   glDepthFunc(GL_LEQUAL);
   this->shader.Use();
   glm::mat4 view = glm::mat4(glm::mat3(this->camera.GetViewMatrix()));
@@ -29,8 +27,7 @@ SpriteRendererSkyBox::Draw()
 }
 
 void
-SpriteRendererSkyBox::init_data()
-{
+SpriteRendererSkyBox::init_data() {
 
   unsigned int skyboxVBO;
   float skyboxVertices[] = {
@@ -61,14 +58,13 @@ SpriteRendererSkyBox::init_data()
                GL_STATIC_DRAW);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
-                        (void *)nullptr);
+                        (void*)nullptr);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
 
 void
-SpriteRendererSkyBox::setCubeMapTextureId(unsigned int cubeMapTextureId)
-{
+SpriteRendererSkyBox::setCubeMapTextureId(unsigned int cubeMapTextureId) {
   cubeMapTextureID = cubeMapTextureId;
 }

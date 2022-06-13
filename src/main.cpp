@@ -3,13 +3,13 @@
 #include <iostream>
 
 void
-framebuffer_size_callback(GLFWwindow *window, int width, int height);
+framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void
-mouse_callback(GLFWwindow *window, double xpos, double ypos);
+mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void
-scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
+scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void
-key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
+key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 // screen dimensions
 const unsigned int SCR_WIDTH = 800;
@@ -28,8 +28,7 @@ float lastFrame = 0.0f;
 Game Sokoban(SCR_WIDTH, SCR_HEIGHT);
 
 auto
-main() -> int
-{
+main() -> int {
   // glfw: initialize and configure
   // ------------------------------
   glfwInit();
@@ -42,7 +41,7 @@ main() -> int
 #endif
 
   // glfw window creation
-  GLFWwindow *window =
+  GLFWwindow* window =
       glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sokoban3D", nullptr, nullptr);
   if (window == nullptr) {
     std::cout << "Failed to create GLFW window" << std::endl;
@@ -103,8 +102,7 @@ main() -> int
 
 // process all input
 void
-key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
-{
+key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     glfwSetWindowShouldClose(window, true);
 
@@ -140,14 +138,12 @@ key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
 }
 
 void
-scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
-{
+scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
   Sokoban.getCamera().ProcessMouseScroll(yoffset);
 }
 
 void
-mouse_callback(GLFWwindow *window, double xpos, double ypos)
-{
+mouse_callback(GLFWwindow* window, double xpos, double ypos) {
   if (firstMouse) {
     lastX = xpos;
     lastY = ypos;
@@ -167,8 +163,7 @@ mouse_callback(GLFWwindow *window, double xpos, double ypos)
 // glfw: whenever the window size changed (by OS or user resize) this callback
 // function executes
 void
-framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
+framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   // make sure the viewport matches the new window dimensions; note that width
   // and height will be significantly larger than specified on retina displays.
   glViewport(0, 0, width, height);

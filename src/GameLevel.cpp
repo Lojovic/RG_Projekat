@@ -2,8 +2,7 @@
 
 // loading the level structure from a .txt file
 void
-GameLevel::Load(const char *file)
-{
+GameLevel::Load(const char* file) {
   // making sure the object vectors are cleared
   this->Cubes.clear();
   this->Boxes.clear();
@@ -33,13 +32,12 @@ GameLevel::Load(const char *file)
 
 // drawing a level using appropriate renderer classes
 void
-GameLevel::Draw(SpriteRenderer &Renderer, SpriteRendererBox &BoxRenderer)
-{
-  for (GameObject &cube : this->Cubes)
+GameLevel::Draw(SpriteRenderer& Renderer, SpriteRendererBox& BoxRenderer) {
+  for (GameObject& cube : this->Cubes)
     cube.Draw(Renderer, this->Lights);
-  for (Box &box : this->Boxes)
+  for (Box& box : this->Boxes)
     box.Draw(BoxRenderer, this->Lights);
-  for (Box &blendBox : this->BlendBoxes)
+  for (Box& blendBox : this->BlendBoxes)
     blendBox.Draw(BoxRenderer, this->Lights);
 }
 
@@ -47,8 +45,7 @@ GameLevel::Draw(SpriteRenderer &Renderer, SpriteRendererBox &BoxRenderer)
 // we use a matrix named cubeData for storing the current level structure,
 // then we check if the move determined by the given direction is possible
 auto
-GameLevel::move(unsigned int direction) -> bool
-{
+GameLevel::move(unsigned int direction) -> bool {
   int new_folk_y, new_folk_x;
   bool move_allowed = true;
   int directionX = 0;
@@ -120,8 +117,7 @@ GameLevel::move(unsigned int direction) -> bool
 
 // checking if the level is completed
 auto
-GameLevel::isCompleted() -> bool
-{
+GameLevel::isCompleted() -> bool {
 
   for (unsigned int i = 0; i < levelSize; i++) {
     for (unsigned int j = 0; j < levelSize; j++) {
@@ -138,8 +134,7 @@ GameLevel::isCompleted() -> bool
 // we use the input from the Load function to
 // fill the appropriate game object vectors
 void
-GameLevel::init()
-{
+GameLevel::init() {
   // TODO: Make some enum dont use numbers
   /*CODES FOR LEVEL:
               9 for wall
@@ -263,8 +258,7 @@ GameLevel::init()
 // each other time we use the update function to
 // do the game object setup
 auto
-GameLevel::update() -> bool
-{
+GameLevel::update() -> bool {
   this->Cubes.clear();
   this->Boxes.clear();
   this->BlendBoxes.clear();

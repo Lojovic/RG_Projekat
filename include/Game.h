@@ -30,7 +30,7 @@ public:
   std::unordered_map<unsigned int, std::string> pathMap;
   void
   render();
-  Camera &
+  Camera&
   getCamera();
 
 private:

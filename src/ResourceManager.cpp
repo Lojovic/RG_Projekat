@@ -18,49 +18,43 @@ std::map<std::string, Shader> ResourceManager::Shaders;
 std::map<std::string, Model> ResourceManager::Models;
 
 auto
-ResourceManager::LoadModel(std::string const &path, std::string name) -> Model
-{
+ResourceManager::LoadModel(std::string const& path, std::string name) -> Model {
   Models[name] = Model(path, false);
   return Models[name];
 }
 
 auto
-ResourceManager::GetModel(std::string name) -> Model
-{
+ResourceManager::GetModel(std::string name) -> Model {
   return Models[name];
 }
 
 auto
-ResourceManager::LoadShader(const char *vShaderFile, const char *fShaderFile,
-                            const char *gShaderFile, std::string name) -> Shader
-{
+ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile,
+                            const char* gShaderFile, std::string name)
+    -> Shader {
   Shaders[name] = loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile);
   return Shaders[name];
 }
 
 auto
-ResourceManager::GetShader(std::string name) -> Shader
-{
+ResourceManager::GetShader(std::string name) -> Shader {
   return Shaders[name];
 }
 
 auto
-ResourceManager::LoadTexture(const char *file, bool alpha, std::string name)
-    -> Texture2D
-{
+ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
+    -> Texture2D {
   Textures[name] = loadTextureFromFile(file, alpha);
   return Textures[name];
 }
 
 auto
-ResourceManager::GetTexture(std::string name) -> Texture2D
-{
+ResourceManager::GetTexture(std::string name) -> Texture2D {
   return Textures[name];
 }
 
 void
-ResourceManager::Clear()
-{
+ResourceManager::Clear() {
   // (properly) delete all shaders
   for (auto iter : Shaders)
     glDeleteProgram(iter.second.ID);
@@ -72,10 +66,9 @@ ResourceManager::Clear()
 }
 
 auto
-ResourceManager::loadShaderFromFile(const char *vShaderFile,
-                                    const char *fShaderFile,
-                                    const char *gShaderFile) -> Shader
-{
+ResourceManager::loadShaderFromFile(const char* vShaderFile,
+                                    const char* fShaderFile,
+                                    const char* gShaderFile) -> Shader {
   // 1. retrieve the vertex/fragment source code from filePath
   std::string vertexCode;
   std::string fragmentCode;
@@ -105,9 +98,9 @@ ResourceManager::loadShaderFromFile(const char *vShaderFile,
   } catch (std::exception e) {
     std::cout << "ERROR::SHADER: Failed to read shader files" << std::endl;
   }
-  const char *vShaderCode = vertexCode.c_str();
-  const char *fShaderCode = fragmentCode.c_str();
-  const char *gShaderCode = geometryCode.c_str();
+  const char* vShaderCode = vertexCode.c_str();
+  const char* fShaderCode = fragmentCode.c_str();
+  const char* gShaderCode = geometryCode.c_str();
   // 2. now create shader object from source code
   Shader shader;
   shader.Compile(vShaderCode, fShaderCode,
@@ -116,8 +109,8 @@ ResourceManager::loadShaderFromFile(const char *vShaderFile,
 }
 
 auto
-ResourceManager::loadTextureFromFile(const char *file, bool alpha) -> Texture2D
-{
+ResourceManager::loadTextureFromFile(const char* file, bool alpha)
+    -> Texture2D {
   // create texture object
   Texture2D texture;
   if (alpha) {
@@ -126,7 +119,7 @@ ResourceManager::loadTextureFromFile(const char *file, bool alpha) -> Texture2D
   }
   // load image
   int width, height, nrChannels;
-  unsigned char *data = stbi_load(file, &width, &height, &nrChannels, 0);
+  unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
 
   if (data) {
     // now generate texture
@@ -149,15 +142,14 @@ ResourceManager::loadTextureFromFile(const char *file, bool alpha) -> Texture2D
 // +Z (front)
 // -Z (back)
 auto
-ResourceManager::loadCubemap(vector<std::string> faces) -> unsigned int
-{
+ResourceManager::loadCubemap(vector<std::string> faces) -> unsigned int {
   unsigned int textureID;
   glGenTextures(1, &textureID);
   glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
   // stbi_set_flip_vertically_on_load(true);
   int width, height, nrChannels;
   for (unsigned int i = 0; i < faces.size(); i++) {
-    unsigned char *data =
+    unsigned char* data =
         stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
     if (data) {
       glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height,
