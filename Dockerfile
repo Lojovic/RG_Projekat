@@ -1,5 +1,8 @@
 FROM ubuntu:20.04
 
+ARG ssh_prv_key
+ARG ssh_pub_key
+
 ENV TZ=Europe/Belgrade
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -19,10 +22,19 @@ RUN apt-get update \
 
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
-	
-COPY . /usr/src/docker-image
 
-WORKDIR /usr/src/docker-image	
+RUN mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    ssh-keyscan github.com > /root/.ssh/known_hosts
+
+RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa && \
+    echo "$ssh_pub_key" > /root/.ssh/id_rsa.pub && \
+    chmod 600 /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa.pub
+
+RUN git clone git@github.com:bob9952/RG_Projekat.git
+
+WORKDIR RG_Projekat/
 
 RUN mkdir build && cd build && cmake .. && make
 	
