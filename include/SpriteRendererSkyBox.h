@@ -4,22 +4,27 @@
 #include <learnopengl/camera.h>
 #include <learnopengl/shader.h>
 
-class SpriteRendererSkyBox {
+class SpriteRendererSkyBox
+{
 public:
-    SpriteRendererSkyBox(Shader shader, Camera &cam);
-    ~SpriteRendererSkyBox();
+  SpriteRendererSkyBox(Shader shader, Camera &cam);
+  ~SpriteRendererSkyBox();
 
-    void setCubeMapTextureId(unsigned int cubeMapTextureId);
+  void
+  setCubeMapTextureId(unsigned int cubeMapTextureId);
 
-    void Draw();
+  void
+  Draw();
+
 private:
-    Shader shader;
-    Camera &camera;
-    unsigned int cubeMapTextureID;
+  Shader shader;
+  Camera &camera;
+  unsigned int cubeMapTextureID;
 
-    unsigned int skyboxVAO;
-    void init_data();
+  unsigned int skyboxVAO;
+  void
+  init_data();
 };
 
 
-#endif //PROJECT_BASE_SPRITERENDERERSKYBOX_H
+#endif // PROJECT_BASE_SPRITERENDERERSKYBOX_H

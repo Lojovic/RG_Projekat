@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.16.5)
-set(PROJECT_NAME project_base)
+cmake_minimum_required(VERSION 3.16.3)
+set(PROJECT_NAME Sokoban3D)
 project(${PROJECT_NAME})
 
 function(watch)

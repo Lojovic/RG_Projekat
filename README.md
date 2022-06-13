@@ -22,3 +22,7 @@ The goal of this game is to set up all the boxes on the marked target squares.
 | ```Mouse left/right/up/down``` | Changing the camera angle |
 | ```Mouse scroll``` | Zooming the camera |
 | ```ESC``` | Exiting the game |
+
+
+## Jenkins
+Jenkins CI should work now.
