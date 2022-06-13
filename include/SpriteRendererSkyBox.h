@@ -7,7 +7,7 @@
 class SpriteRendererSkyBox
 {
 public:
-  SpriteRendererSkyBox(Shader shader, Camera& cam);
+  SpriteRendererSkyBox(Shader shader, Camera &cam);
   ~SpriteRendererSkyBox();
 
   void
@@ -18,7 +18,7 @@ public:
 
 private:
   Shader shader;
-  Camera& camera;
+  Camera &camera;
   unsigned int cubeMapTextureID;
 
   unsigned int skyboxVAO;

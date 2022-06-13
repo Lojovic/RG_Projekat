@@ -1,7 +1,8 @@
 #include "ModelRendererTorch.h"
 
-ModelRendererTorch::ModelRendererTorch(Shader shader, Camera& camera)
-    : camera(camera) {
+ModelRendererTorch::ModelRendererTorch(Shader shader, Camera &camera)
+    : camera(camera)
+{
   this->shader = shader;
 }
 
@@ -10,7 +11,8 @@ ModelRendererTorch::~ModelRendererTorch() = default;
 // an abstraction for rendering the torches
 void
 ModelRendererTorch::Draw(Model model, glm::vec3 position, glm::vec3 size,
-                         glm::vec3 rotation, float angle) {
+                         glm::vec3 rotation, float angle)
+{
   this->shader.Use();
 
   glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom),

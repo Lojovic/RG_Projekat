@@ -35,21 +35,21 @@ public:
   loadCubemap(vector<std::string> faces);
 
   static Model
-  LoadModel(std::string const& path, std::string name);
+  LoadModel(std::string const &path, std::string name);
   static Model
   GetModel(std::string name);
   // loads (and generates) a shader program from file loading vertex, fragment
   // (and geometry) shader's source code. If gShaderFile is not nullptr, it also
   // loads a geometry shader
   static Shader
-  LoadShader(const char* vShaderFile, const char* fShaderFile,
-             const char* gShaderFile, std::string name);
+  LoadShader(const char *vShaderFile, const char *fShaderFile,
+             const char *gShaderFile, std::string name);
   // retrieves a stored sader
   static Shader
   GetShader(std::string name);
   // loads (and generates) a texture from file
   static Texture2D
-  LoadTexture(const char* file, bool alpha, std::string name);
+  LoadTexture(const char *file, bool alpha, std::string name);
   // retrieves a stored texture
   static Texture2D
   GetTexture(std::string name);
@@ -63,10 +63,10 @@ private:
   ResourceManager() {}
   // loads and generates a shader from file
   static Shader
-  loadShaderFromFile(const char* vShaderFile, const char* fShaderFile,
-                     const char* gShaderFile = nullptr);
+  loadShaderFromFile(const char *vShaderFile, const char *fShaderFile,
+                     const char *gShaderFile = nullptr);
   // loads a single texture from file
   static Texture2D
-  loadTextureFromFile(const char* file, bool alpha);
+  loadTextureFromFile(const char *file, bool alpha);
 };
 #endif // PROJECT_BASE_RESOURCEMANAGER_H

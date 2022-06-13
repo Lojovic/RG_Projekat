@@ -25,10 +25,10 @@ public:
   GameLevel() {}
   // Load level from file
   void
-  Load(const char* file);
+  Load(const char *file);
   // render lvl
   void
-  Draw(SpriteRenderer& Renderer, SpriteRendererBox& BoxRenderer);
+  Draw(SpriteRenderer &Renderer, SpriteRendererBox &BoxRenderer);
   // check if level is completed (all cubes are on right position)
   bool
   isCompleted();

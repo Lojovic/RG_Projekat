@@ -12,7 +12,8 @@
 #include <sstream>
 #include <string>
 std::string
-readFileContents(std::string path) {
+readFileContents(std::string path)
+{
   std::ifstream in(path);
   std::stringstream buffer;
   buffer << in.rdbuf();
@@ -24,13 +25,14 @@ class Shader
   unsigned int m_Id;
 
 public:
-  Shader(std::string vertexShaderPath, std::string fragmentShaderPath) {
+  Shader(std::string vertexShaderPath, std::string fragmentShaderPath)
+  {
     // build and compile our shader program
     // ------------------------------------
     // vertex shader
     std::string vsString = readFileContents(vertexShaderPath);
     ASSERT(!vsString.empty(), "Vertex shader source is empty!");
-    const char* vertexShaderSource = vsString.c_str();
+    const char *vertexShaderSource = vsString.c_str();
     int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -47,7 +49,7 @@ public:
     int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     std::string fsString = readFileContents(fragmentShaderPath);
     ASSERT(!fsString.empty(), "Fragment shader empty!");
-    const char* fragmentShaderSource = fsString.c_str();
+    const char *fragmentShaderSource = fsString.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
     // check for shader compile errors
@@ -75,32 +77,37 @@ public:
   }
 
   void
-  use() {
+  use()
+  {
     ASSERT(m_Id > 0, "Use of unidefned or delete program!");
     glUseProgram(m_Id);
   }
 
   void
-  setUniform4f(std::string name, float x, float y, float z, float w) {
+  setUniform4f(std::string name, float x, float y, float z, float w)
+  {
     int uniformId = glGetUniformLocation(m_Id, name.c_str());
     glUniform4f(uniformId, x, y, z, w);
   }
 
   void
-  setUniform1i(std::string name, int value) {
+  setUniform1i(std::string name, int value)
+  {
     int uniformId = glGetUniformLocation(m_Id, name.c_str());
     glUniform1i(uniformId, value);
   }
 
   void
-  deleteProgram() {
+  deleteProgram()
+  {
     glDeleteProgram(m_Id);
     m_Id = 0;
   }
 
 
   void
-  setUniform1f(std::string name, double value) {
+  setUniform1f(std::string name, double value)
+  {
     int uniformId = glGetUniformLocation(m_Id, name.c_str());
     glUniform1f(uniformId, value);
   }

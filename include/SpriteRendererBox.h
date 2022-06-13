@@ -9,7 +9,7 @@
 class SpriteRendererBox
 {
 public:
-  SpriteRendererBox(Shader shader, Camera& camera);
+  SpriteRendererBox(Shader shader, Camera &camera);
   ~SpriteRendererBox();
 
   void
@@ -21,7 +21,7 @@ public:
 
 private:
   Shader shader;
-  Camera& camera;
+  Camera &camera;
   unsigned int VAO;
 
   void

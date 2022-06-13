@@ -18,15 +18,17 @@ public:
   // constructor
   Shader() {}
   // sets the current shader as active
-  Shader&
-  Use() {
+  Shader &
+  Use()
+  {
     glUseProgram(this->ID);
     return *this;
   }
 
   void
-  Compile(const char* vertexSource, const char* fragmentSource,
-          const char* geometrySource) {
+  Compile(const char *vertexSource, const char *fragmentSource,
+          const char *geometrySource)
+  {
     unsigned int sVertex, sFragment, gShader;
     // vertex Shader
     sVertex = glCreateShader(GL_VERTEX_SHADER);
@@ -62,40 +64,44 @@ public:
   }
 
   void
-  SetFloat(const char* name, float value, bool useShader = false) {
+  SetFloat(const char *name, float value, bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform1f(glGetUniformLocation(this->ID, name), value);
   }
   void
-  SetInteger(const char* name, int value, bool useShader = false) {
+  SetInteger(const char *name, int value, bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform1i(glGetUniformLocation(this->ID, name), value);
   }
   void
-  SetVector2f(const char* name, float x, float y, bool useShader = false) {
+  SetVector2f(const char *name, float x, float y, bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform2f(glGetUniformLocation(this->ID, name), x, y);
   }
   void
-  SetVector2f(const char* name, const glm::vec2& value,
-              bool useShader = false) {
+  SetVector2f(const char *name, const glm::vec2 &value, bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform2f(glGetUniformLocation(this->ID, name), value.x, value.y);
   }
   void
-  SetVector3f(const char* name, float x, float y, float z,
-              bool useShader = false) {
+  SetVector3f(const char *name, float x, float y, float z,
+              bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform3f(glGetUniformLocation(this->ID, name), x, y, z);
   }
   void
-  SetVector3f(const char* name, const glm::vec3& value,
-              bool useShader = false) {
+  SetVector3f(const char *name, const glm::vec3 &value, bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform3f(glGetUniformLocation(this->ID, name), value.x, value.y,
@@ -103,24 +109,25 @@ public:
   }
 
   void
-  SetVector4f(const char* name, float x, float y, float z, float w,
-              bool useShader = false) {
+  SetVector4f(const char *name, float x, float y, float z, float w,
+              bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform4f(glGetUniformLocation(this->ID, name), x, y, z, w);
   }
 
   void
-  SetVector4f(const char* name, const glm::vec4& value,
-              bool useShader = false) {
+  SetVector4f(const char *name, const glm::vec4 &value, bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniform4f(glGetUniformLocation(this->ID, name), value.x, value.y, value.z,
                 value.w);
   }
   void
-  SetMatrix4(const char* name, const glm::mat4& matrix,
-             bool useShader = false) {
+  SetMatrix4(const char *name, const glm::mat4 &matrix, bool useShader = false)
+  {
     if (useShader)
       this->Use();
     glUniformMatrix4fv(glGetUniformLocation(this->ID, name), 1, false,
@@ -130,7 +137,8 @@ public:
 private:
   // checks if compilation or linking failed and if so, print the error logs
   void
-  checkCompileErrors(unsigned int object, std::string type) {
+  checkCompileErrors(unsigned int object, std::string type)
+  {
     int success;
     char infoLog[1024];
     if (type != "PROGRAM") {

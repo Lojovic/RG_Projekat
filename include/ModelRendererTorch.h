@@ -10,7 +10,7 @@
 class ModelRendererTorch
 {
 public:
-  ModelRendererTorch(Shader shader, Camera& camera);
+  ModelRendererTorch(Shader shader, Camera &camera);
   ~ModelRendererTorch();
 
   void
@@ -19,7 +19,7 @@ public:
 
 private:
   Shader shader;
-  Camera& camera;
+  Camera &camera;
 };
 
 

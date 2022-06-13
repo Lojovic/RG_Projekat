@@ -1,11 +1,12 @@
 #include "Game.h"
 
-SpriteRenderer* Renderer;
-SpriteRendererBox* BoxRenderer;
-ModelRendererTorch* TorchRenderer;
-SpriteRendererSkyBox* SkyBoxRenderer;
+SpriteRenderer *Renderer;
+SpriteRendererBox *BoxRenderer;
+ModelRendererTorch *TorchRenderer;
+SpriteRendererSkyBox *SkyBoxRenderer;
 
-Game::Game(unsigned int width, unsigned int height) : levelID(0) {
+Game::Game(unsigned int width, unsigned int height) : levelID(0)
+{
   this->width = width;
   this->height = height;
   this->camera.Position = glm::vec3(3.0f, 12.0f, -8.0f);
@@ -14,13 +15,15 @@ Game::Game(unsigned int width, unsigned int height) : levelID(0) {
   this->pathMap[2] = "resources/levels/3.txt";
 }
 
-Game::~Game() {
+Game::~Game()
+{
   delete Renderer;
   delete BoxRenderer;
 }
 
 void
-Game::init() {
+Game::init()
+{
   // load shaders
   ResourceManager::LoadShader(
       FileSystem::getPath("resources/shaders/vertexShader.vs.glsl").c_str(),
@@ -130,7 +133,8 @@ Game::init() {
 
 // allowing the camera to move and a level restarting feature
 void
-Game::processInput(float deltaTime) {
+Game::processInput(float deltaTime)
+{
   if (!this->cameraLock) {
     if (this->GameKeys[GLFW_KEY_W])
       this->camera.ProcessKeyboard(FORWARD, deltaTime);
@@ -150,7 +154,8 @@ Game::processInput(float deltaTime) {
 
 // rendering of the current level, the light objects and the skybox
 void
-Game::render() {
+Game::render()
+{
   if (this->Levels[this->levelID].update() && this->levelID < 2)
     this->levelID++;
 
@@ -162,6 +167,7 @@ Game::render() {
 }
 
 auto
-Game::getCamera() -> Camera& {
+Game::getCamera() -> Camera &
+{
   return camera;
 }

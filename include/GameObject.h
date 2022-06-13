@@ -18,7 +18,7 @@ public:
              glm::vec3 color = glm::vec3(1.0f));
 
   virtual void
-  Draw(SpriteRenderer& renderer, std::vector<glm::vec3> lightPositions);
+  Draw(SpriteRenderer &renderer, std::vector<glm::vec3> lightPositions);
 };
 
 

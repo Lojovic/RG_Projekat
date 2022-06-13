@@ -4,7 +4,8 @@
 #include <learnopengl/camera.h>
 
 
-SpriteRenderer::SpriteRenderer(Shader shader, Camera& cam) : camera(cam) {
+SpriteRenderer::SpriteRenderer(Shader shader, Camera &cam) : camera(cam)
+{
   this->shader = shader;
   this->initRenderData();
 }
@@ -14,7 +15,8 @@ SpriteRenderer::~SpriteRenderer() = default;
 void
 SpriteRenderer::DrawSprite(std::vector<glm::vec3> pointLightPositions,
                            Texture2D texture, glm::vec3 position,
-                           glm::vec3 size, float rotation, glm::vec3 color) {
+                           glm::vec3 size, float rotation, glm::vec3 color)
+{
   // we activate and bind the given texture
   glActiveTexture(GL_TEXTURE0);
   texture.Bind();
@@ -65,7 +67,8 @@ SpriteRenderer::DrawSprite(std::vector<glm::vec3> pointLightPositions,
 }
 
 void
-SpriteRenderer::initRenderData() {
+SpriteRenderer::initRenderData()
+{
   unsigned int VBO;
   float vertices[] = {
       // positions          // normals           // texture coords
@@ -114,15 +117,15 @@ SpriteRenderer::initRenderData() {
 
   // postition atribute
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                        (void*)nullptr);
+                        (void *)nullptr);
   glEnableVertexAttribArray(0);
   // normals atribute
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                        (void*)(3 * sizeof(float)));
+                        (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
   // tex coords atribute
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                        (void*)(6 * sizeof(float)));
+                        (void *)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);

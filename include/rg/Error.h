@@ -26,24 +26,27 @@
         rg::wasPreviousOpenGLCallSuccessful(__FILE__, __LINE__, #x));          \
   } while (0)
 
-namespace rg {
+namespace rg
+{
 
 
 void
 clearAllOpenGlErrors();
-const char*
+const char *
 openGLErrorToString(GLenum error);
 bool
-wasPreviousOpenGLCallSuccessful(const char* file, int line, const char* call);
+wasPreviousOpenGLCallSuccessful(const char *file, int line, const char *call);
 
 void
-clearAllOpenGlErrors() {
+clearAllOpenGlErrors()
+{
   while (glGetError() != GL_NO_ERROR) {
     ;
   }
 }
-const char*
-openGLErrorToString(GLenum error) {
+const char *
+openGLErrorToString(GLenum error)
+{
   switch (error) {
   case GL_NO_ERROR:
     return "GL_NO_ERROR";
@@ -60,7 +63,8 @@ openGLErrorToString(GLenum error) {
   return "THIS_SHOULD_NEVER_HAPPEN";
 }
 bool
-wasPreviousOpenGLCallSuccessful(const char* file, int line, const char* call) {
+wasPreviousOpenGLCallSuccessful(const char *file, int line, const char *call)
+{
   bool success = true;
   while (GLenum error = glGetError()) {
     std::cerr << "[OpenGL error] " << error << " " << openGLErrorToString(error)
