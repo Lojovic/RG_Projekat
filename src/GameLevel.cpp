@@ -86,8 +86,7 @@ GameLevel::move(unsigned int direction) -> bool
     int new_box_y = new_folk_y + directionY;
 
     // checking if we hit a wall
-    if (cubeData[new_box_x][new_box_y] == 9 ||
-        cubeData[new_box_x][new_box_y] == 8)
+    if (cubeData[new_box_x][new_box_y] == 9)
       move_allowed = false;
 
     // checking if we hit another box
